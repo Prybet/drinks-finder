@@ -6,17 +6,26 @@ const DrinksContext = createContext();
 
 const DrinksProvider = ({ children }) => {
 
-    const [drinks, setDrinks] = useState([]);
+    const [result, setResult] = useState({
+        meta: {},
+        drinks: []
+    });
     const [modal, setModal] = useState(false);
     const [drinkId, setDrinkId] = useState(null);
     const [recipe, setRecipe] = useState({});
     const [loading, setLoading] = useState(false)
 
-    const getDrinks = async search => {
+    const getDrinks = async (key, value) => {
         try {
-            const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?s=${search.name}&c=${search.category}`
+            const url = `https://www.thecocktaildb.com/api/json/v1/1/${key === "s" ? "search" : "filter"}.php?${key}=${value}`
             const { data } = await axios(url);
-            setDrinks(data.drinks)
+            setResult({
+                meta: {
+                    total: data?.drinks?.length || 0,
+                    search: key === "s" ? `Name ${value}` : `Category ${value}`
+                },
+                drinks: data.drinks || []
+            })
         } catch (e) {
             console.log(e);
         }
@@ -51,7 +60,7 @@ const DrinksProvider = ({ children }) => {
     return (
         <DrinksContext.Provider
             value={{
-                drinks,
+                result,
                 getDrinks,
                 modal,
                 handleModalClick,
