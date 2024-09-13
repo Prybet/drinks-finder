@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap"
 import DrinkModal from "./components/DrinkModal"
-import DrinksList from "./components/DrinksLIst"
+import DrinksList from "./components/DrinksList"
 import Formulary from "./components/Formulary"
 import { CategoriesProvider } from "./context/CategoriesProvider"
 import { DrinksProvider } from "./context/DrinksProvider"
